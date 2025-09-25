@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LAPP</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Microsoft YaHei', 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #0c0e2b 0%, #1a1a4b 25%, #2d1b69 50%, #4a1b7a 75%, #6a1b9a 100%);
+            min-height: 100vh;
+            color: #333;
+            background-attachment: fixed;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 30px rgba(0,0,0,0.3);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #2d1b69;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-menu a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .nav-menu a:hover {
+            background: linear-gradient(135deg, #2d1b69, #6a1b9a);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4);
+        }
+        
+        .hero {
+            margin-top: 80px;
+            padding: 150px 2rem;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, rgba(12, 14, 43, 0.9) 0%, rgba(106, 27, 154, 0.7) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse"><path d="M 10 0 L 0 0 0 10" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="0.5"/></pattern></defs><rect width="100" height="100" fill="url(%23grid)"/></svg>');
+            animation: float 20s infinite linear;
+        }
+        
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(10px, 10px); }
+        }
+        
+        .hero h1 {
+            font-size: 3.5em;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            position: relative;
+            background: linear-gradient(135deg, #fff, #ffffff);
+            -webkit-background-clip: text;
+            /* -webkit-text-fill-color: transparent; */
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: 1.4em;
+            max-width: 800px;
+            margin: 0 auto;
+            line-height: 1.6;
+            opacity: 0.9;
+            position: relative;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+        
+        .section {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 3rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .section:hover {
+            transform: translateY(-5px);
+        }
+        
+        .section h2 {
+            color: #2d1b69;
+            margin-bottom: 2rem;
+            font-size: 2.4em;
+            border-left: 6px solid #6a1b9a;
+            padding-left: 1.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .intro-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .intro-card {
+            background: linear-gradient(135deg, #f8f9fa, #e8eaf6);
+            padding: 2.5rem;
+            border-radius: 15px;
+            border-left: 5px solid #6a1b9a;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .intro-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.2);
+        }
+        
+        .intro-card h3 {
+            color: #2d1b69;
+            margin-bottom: 1.5rem;
+            font-size: 1.4em;
+        }
+        
+        .intro-card p {
+            color: #555;
+            line-height: 1.7;
+        }
+        
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .service-card {
+            background: linear-gradient(135deg, #6a1b9a 0%, #8e24aa 50%, #ab47bc 100%);
+            color: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            text-align: center;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(106, 27, 154, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+        
+        .service-card:hover::before {
+            left: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(106, 27, 154, 0.5);
+        }
+        
+        .service-icon {
+            font-size: 3.5em;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+        
+        .service-card h3 {
+            font-size: 1.6em;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .service-card p {
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .quick-access {
+            text-align: center;
+            margin-top: 3rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6a1b9a, #8e24aa);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 5px 15px rgba(106, 27, 154, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(106, 27, 154, 0.6);
+            background: linear-gradient(135deg, #8e24aa, #ab47bc);
+        }
+        
+        .footer {
+            background: linear-gradient(135deg, #0c0e2b, #1a1a4b);
+            color: white;
+            text-align: center;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .contact-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-item {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2rem;
+            border-radius: 15px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+        
+        .contact-item h3 {
+            color: #ab47bc;
+            margin-bottom: 1rem;
+            font-size: 1.3em;
+        }
+        
+        .contact-item p {
+            color: #e0e0ff;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">LAPP</div>
+            <ul class="nav-menu">
+                <li><a href="#home">首页</a></li>
+                <li><a href="#about">实验室介绍</a></li>
+                <li><a href="#research">研究方向</a></li>
+                <li><a href="#services">实验室服务平台</a></li>
+                <li><a href="#contact">联系我们</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- 主页内容 -->
+    <section id="home" class="hero">
+        <!-- <h1>先进动力与推进教育部重点实验室</h1> -->
+        <h1>实验室</h1>
+        <!-- <p>Key Laboratory of Advanced Power and Propulsion, MOE</p> -->
+        <p> · </p>
+        <!-- <p>引领先进动力技术创新，推动航空航天与能源动力领域前沿研究</p> -->
+    </section>
+
+    <div class="container">
+        <!-- 实验室介绍 -->
+        <section id="about" class="section">
+            <h2>实验室简介</h2>
+            <div class="intro-grid">
+                <div class="intro-card">
+                    <h3>🏛️ 实验室概况</h3>
+                    <!-- <p>先进动力与推进教育部重点实验室成立于2010年，依托清华大学强大的科研实力，专注于先进动力系统、推进技术和能源转换的前沿研究。实验室拥有国际一流的实验设备和计算资源，汇聚了国内外顶尖的科研人才。</p> -->
+                </div>
+                <div class="intro-card">
+                    <h3>🎯 研究使命</h3>
+                    <!-- <p>面向国家重大战略需求，致力于突破先进动力与推进技术的核心瓶颈，培养高层次创新人才，建设国际一流的研究平台，为我国航空航天、能源动力等领域的发展提供强有力的技术支撑和人才保障。</p> -->
+                </div>
+                <div class="intro-card">
+                    <h3>💡 创新方向</h3>
+                    <!-- <p>实验室在爆震燃烧、多相流基础研究、高性能计算与人工智能应用等方向开展创新性研究，推动动力技术的革命性突破，为实现"双碳"目标和能源安全做出重要贡献。</p> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 研究方向 -->
+        <section id="research" class="section">
+            <h2>主要研究方向</h2>
+            <div class="intro-grid">
+                <div class="intro-card">
+                    <!-- <h3>🔬 先进动力与爆震燃烧</h3> -->
+                    <!-- <p>开展旋转爆震发动机、脉冲爆震发动机等新型推进系统的理论与实验研究，探索高效清洁的燃烧组织方式，突破传统热力循环的效率限制，为下一代航空航天推进系统提供技术储备。</p> -->
+                </div>
+                <div class="intro-card">
+                    <!-- <h3>⚡ 极端反应多相流基础研究</h3> -->
+                    <!-- <p>研究极端条件下多相流动与化学反应耦合机制，发展高精度数值模拟方法，揭示复杂流动中的物理本质，为先进动力装置的设计优化提供理论基础和技术支持。</p> -->
+                </div>
+                <div class="intro-card">
+                    <!-- <h3>🤖 高性能计算与人工智能</h3> -->
+                    <!-- <p>结合超级计算与机器学习技术，开发智能化的设计优化算法，构建数字孪生平台，实现动力系统从概念设计到运行维护的全生命周期智能化管理。</p> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 服务平台 -->
+        <section id="services" class="section">
+            <h2>实验室服务平台</h2>
+            <p style="margin-bottom: 2rem; color: #666; text-align: center; font-size: 1.1em;">点击以下服务卡片访问实验室各类科研平台资源</p>
+            
+            <div class="services-grid">
+                <a href="/hpc-platform.html" class="service-card">
+                    <div class="service-icon">🚀</div>
+                    <h3>HPC智算平台</h3>
+                    <!-- <p>万核级的高性能计算集群，支持大规模数值模拟和人工智能训练任务</p> -->
+                </a>
+                
+                <a href="/meshcentral/" class="service-card">
+                    <div class="service-icon">🖥️</div>
+                    <h3>远程控制平台</h3>
+                    <!-- <p>实现实验设备的远程监控与操作，支持分布式协作研究和远程教学演示</p> -->
+                </a>
+                
+                <a href="/files/" class="service-card">
+                    <div class="service-icon">📁</div>
+                    <h3>数据管理平台</h3>
+                    <!-- <p>提供安全可靠的科研数据存储、共享与管理服务</p> -->
+                </a>
+                
+                <a href="/monitoring/" class="service-card">
+                    <div class="service-icon">📊</div>
+                    <h3>设备状态监控</h3>
+                    <!-- <p>实时监控实验室设备运行状态，提供智能预警和运维管理功能</p> -->
+                </a>
+            </div>
+        </section>
+
+        <!-- 联系我们 -->
+        <section id="contact" class="section">
+            <h2>联系我们</h2>
+            <div class="contact-info">
+                <div class="contact-item">
+                    <h3>📍 实验室地址</h3>
+                    <!-- <p>北京市海淀区清华大学<br>蒙民伟科技大楼北楼<br>邮编：100084</p> -->
+                </div>
+                <div class="contact-item">
+                    <h3>📞 联系电话</h3>
+                    <!-- <p>实验室办公室：010-6278XXXX<br>技术咨询：010-6278XXXX<br>传真：010-6278XXXX</p> -->
+                </div>
+                <div class="contact-item">
+                    <h3>📧 电子邮箱</h3>
+                    <!-- <p>实验室主任：director@lapp.tsinghua.edu.cn<br>学术事务：academic@lapp.tsinghua.edu.cn<br>技术支撑：support@lapp.tsinghua.edu.cn</p> -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 快速访问 -->
+        <div class="quick-access">
+            <a href="/hpc-platform.html" class="btn">进入HPC智算平台</a>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <!-- <p>© 2025 先进动力与推进教育部重点实验室（LAPP）| 清华大学</p> -->
+        <!-- <p>地址：北京市海淀区清华大学蒙民伟科技大楼 | 电话：010-6278XXXX</p> -->
+    </footer>
+
+    <script>
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href').substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                    const targetPosition = target.offsetTop - navbarHeight - 20;
+                    
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                    
+                    history.pushState(null, null, '#' + targetId);
+                }
+            });
+        });
+
+        // 导航栏背景切换
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 100) {
+                navbar.style.background = 'rgba(255, 255, 255, 0.98)';
+                navbar.style.boxShadow = '0 5px 25px rgba(0,0,0,0.4)';
+            } else {
+                navbar.style.background = 'rgba(255, 255, 255, 0.95)';
+                navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.3)';
+            }
+        });
+
+        // 页面加载时处理锚点链接
+        window.addEventListener('load', function() {
+            if (window.location.hash) {
+                const targetId = window.location.hash.substring(1);
+                const target = document.getElementById(targetId);
+                if (target) {
+                    setTimeout(() => {
+                        const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                        const targetPosition = target.offsetTop - navbarHeight - 20;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }, 100);
+                }
+            }
+        });
+
+        // 添加滚动动画效果
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // 观察所有需要动画的元素
+        document.querySelectorAll('.section, .intro-card, .service-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
